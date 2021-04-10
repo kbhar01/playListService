@@ -32,7 +32,7 @@ public class PlayListService {
             List<PlayListEntity> existingPlaylists = this.repository.findAll();
             for (PlayListEntity entity : existingPlaylists)
             {
-                if(entity.getName() == playListDTO.getName())
+                if(entity.getName().equalsIgnoreCase(playListDTO.getName()))
                 {
                     response.setMessage("Playlist NOT created. Playlist already exists.");
                     return response;
