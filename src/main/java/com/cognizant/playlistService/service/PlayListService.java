@@ -64,4 +64,23 @@ public class PlayListService {
 
         return response;
     }
+
+    public Response deleteSongFromPlaylist(PlayListSongDTO playListSongDTO) {
+
+        Response response = new Response();
+
+        List<PlayListEntity> existingPlaylists = this.repository.findAll();
+        for (PlayListEntity entity : existingPlaylists)
+        {
+            if(entity.getName().equalsIgnoreCase(playListSongDTO.getName()))
+            {
+                entity.getSongList().remove(playListSongDTO.getSong());
+                repository.save(entity);
+                response.setMessage("Song has been removed successfully from the playlist.");
+            }
+        }
+
+        return response;
+
+    }
 }

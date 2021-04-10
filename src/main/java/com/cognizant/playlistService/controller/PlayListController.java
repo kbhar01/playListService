@@ -34,4 +34,9 @@ public class PlayListController {
     public ResponseEntity<?> addSongToPlaylist(@RequestBody PlayListSongDTO playListSongDTO) {
         return new ResponseEntity<>(playListService.addSongToPlayList(playListSongDTO), HttpStatus.ACCEPTED);
     }
+
+    @PostMapping("/deletesong")
+    public ResponseEntity<?> deleteSongFromPlaylist(@RequestBody PlayListSongDTO playListSongDTO) {
+        return new ResponseEntity<>(playListService.deleteSongFromPlaylist(playListSongDTO), HttpStatus.ACCEPTED);
+    }
 }

@@ -156,4 +156,56 @@ public class PlayListServiceIntegrationTest {
                         fieldWithPath("[0].songList[1]").description("Song 2")
                 )));
     }
+
+
+    @Test
+    public void deleteSongFromPlaylist() throws Exception {
+
+        PlayListDTO tempRequest = new PlayListDTO();
+        tempRequest.setName("Playlist Name");
+        List<String> songList = new ArrayList<String>();
+        songList.add("Song 1");
+        songList.add("Song 2");
+        songList.add("Song 3");
+        tempRequest.setSongList(songList);
+
+        PlayListSongDTO playListSongDTO = new PlayListSongDTO();
+        playListSongDTO.setName("Playlist Name");
+        playListSongDTO.setSong("Song 2");
+
+
+        RequestBuilder rq = post("/")
+                .content(mapper.writeValueAsString(tempRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                ;
+
+        mockMvc.perform(rq)
+                .andExpect(status().isCreated())
+        ;
+
+        RequestBuilder rq2 = post("/deletesong")
+                .content(mapper.writeValueAsString(playListSongDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                ;
+
+        mockMvc.perform(rq2)
+                .andExpect(status().isAccepted())
+        ;
+
+        RequestBuilder requestBuilder = get("/");
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("[0].name").value("Playlist Name"))
+                .andExpect(jsonPath("[0].songList[0]").value("Song 1"))
+                .andExpect(jsonPath("[0].songList[1]").value("Song 3"))
+                .andDo(print())
+                .andDo(document("PlayList", responseFields(
+                        fieldWithPath("[0].name").description("Name of Playlist."),
+                        fieldWithPath("[0].songList[0]").description("Song 1"),
+                        fieldWithPath("[0].songList[1]").description("Song 3")
+                )));
+
+
+    }
 }
