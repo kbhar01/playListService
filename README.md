@@ -171,6 +171,34 @@ Schemes: http
             <p>PlayListController -> addNewPlayList()</p>
         </td>
     </tr>
+    <tr>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <a href="#summary">/addsong</a>
+        </td>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <a href="#post-comment">POST</a>
+        </td>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <p>Add a Song to an existing Playlist</p>
+        </td>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <p>PlayListController -> addSongToPlaylist()</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <a href="#summary">/deletesong</a>
+        </td>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <a href="#post-comment">POST</a>
+        </td>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <p>Remove a Song from an existing Playlist</p>
+        </td>
+        <td style="border: 1px solid #ddd;padding: 5px;">
+            <p>PlayListController -> deleteSongFromPlaylist()</p>
+        </td>
+    </tr>
     </tbody>
 </table>
 #### API Details
