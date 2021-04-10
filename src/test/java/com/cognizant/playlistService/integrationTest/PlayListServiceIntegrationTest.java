@@ -1,6 +1,7 @@
 package com.cognizant.playlistService.integrationTest;
 
 import com.cognizant.playlistService.request.PlayListDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,5 +70,30 @@ public class PlayListServiceIntegrationTest {
         mockMvc.perform(rq)
                 .andExpect(status().isCreated())
                 ;
+    }
+
+    @Test
+    public void postAndGetPlaylistBack() throws Exception {
+        PlayListDTO tempRequest = new PlayListDTO();
+        tempRequest.setName("Playlist Name");
+        List<String> songList = new ArrayList<String>();
+        songList.add("Name of Song");
+
+
+        RequestBuilder rq = post("/")
+                .content(mapper.writeValueAsString(tempRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                ;
+
+        mockMvc.perform(rq)
+                .andExpect(status().isCreated())
+        ;
+
+        RequestBuilder requestBuilder = get("/");
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("[0].name").value("Playlist Name"))
+        ;
     }
 }
