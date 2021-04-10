@@ -150,7 +150,7 @@ public class PlayListServiceIntegrationTest {
                 .andExpect(jsonPath("[0].songList[0]").value("Name of Song"))
                 .andExpect(jsonPath("[0].songList[1]").value("Song 2"))
                 .andDo(print())
-                .andDo(document("PlayList", responseFields(
+                .andDo(document("AddSongToPlayList", responseFields(
                         fieldWithPath("[0].name").description("Name of Playlist."),
                         fieldWithPath("[0].songList[0]").description("Song 1"),
                         fieldWithPath("[0].songList[1]").description("Song 2")
@@ -190,6 +190,7 @@ public class PlayListServiceIntegrationTest {
 
         mockMvc.perform(rq2)
                 .andExpect(status().isAccepted())
+                .andDo(document("DeleteSongFromPlayList"))
         ;
 
         RequestBuilder requestBuilder = get("/");
@@ -200,7 +201,7 @@ public class PlayListServiceIntegrationTest {
                 .andExpect(jsonPath("[0].songList[0]").value("Song 1"))
                 .andExpect(jsonPath("[0].songList[1]").value("Song 3"))
                 .andDo(print())
-                .andDo(document("PlayList", responseFields(
+                .andDo(document("DeleteSongFromPlayList", responseFields(
                         fieldWithPath("[0].name").description("Name of Playlist."),
                         fieldWithPath("[0].songList[0]").description("Song 1"),
                         fieldWithPath("[0].songList[1]").description("Song 3")
