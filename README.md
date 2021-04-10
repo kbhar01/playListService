@@ -3,14 +3,14 @@
 
 <p align="center">
   <a href="#">
-    <img src="./img/img.png" alt="guest book logo" width="247" height="73">
+    <img src="./img/img.png" alt="playlist logo" width="247" height="73">
   </a>
 </p>
 
-<h3 align="center">Guest Book Service (Back-End Spring Boot REST API)</h3>
+<h3 align="center">Playlist Service (Back-End Spring Boot REST API)</h3>
 
 <p align="center">
-  Guest Book is a service where the user can go and post a comment with the name and also can see all the comments.
+  Playlist is a service where the user can go and create song playlists with multiple songs of their choice.
   <br>
 
   <br>
@@ -79,7 +79,6 @@ Software Requirement:
 Follow these to deploy the container automatically.
 Files Required:
 - Dockerfile
-- heroku.yml
   Steps:
 
 1. Login into heroku.
