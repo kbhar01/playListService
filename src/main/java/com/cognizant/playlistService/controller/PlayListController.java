@@ -21,15 +21,11 @@ public class PlayListController {
 
     @GetMapping
     public ResponseEntity<?> getPlayLists() {
-
         return ResponseEntity.ok(playListService.getAllPlayLists());
     }
 
     @PostMapping
     public ResponseEntity<?> addNewPlayList(@RequestBody PlayListDTO playListDTO){
-        playListService.addPlayList(playListDTO);
-        Response response = new Response();
-        response.setMessage("Playlist addition Successful.");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(playListService.addPlayList(playListDTO),HttpStatus.CREATED);
     }
 }

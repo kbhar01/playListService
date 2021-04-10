@@ -26,7 +26,7 @@ public class PlayListService {
         entity.setSongList(playListDTO.getSongList());
         repository.save(entity);
         Response response = new Response();
-        response.setMessage("Comment is Successfully Created.");
+        response.setMessage("Playlist is Successfully Created.");
         return response;
     }
 }

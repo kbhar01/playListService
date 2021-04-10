@@ -18,6 +18,9 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,8 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-//@ActiveProfiles("qa")
-//@AutoConfigureRestDocs
+@ActiveProfiles("qa")
+@AutoConfigureRestDocs
 public class PlayListServiceIntegrationTest {
 
     @Autowired
@@ -44,13 +47,13 @@ public class PlayListServiceIntegrationTest {
     }
 
     @Test
-    public void getAllEntriesTest() throws Exception {
+    public void getZeroEntriesTest() throws Exception {
 
         RequestBuilder requestBuilder = get("/");
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)))
-                ;
+                .andExpect(jsonPath("$", hasSize(0)));
+
     }
 
     @Test
@@ -69,7 +72,11 @@ public class PlayListServiceIntegrationTest {
 
         mockMvc.perform(rq)
                 .andExpect(status().isCreated())
-                ;
+                .andDo(print())
+                .andDo(document("AddPlayList", responseFields(
+                        fieldWithPath("message").description("Response Message.")
+                )));
+
     }
 
     @Test
@@ -94,6 +101,9 @@ public class PlayListServiceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("[0].name").value("Playlist Name"))
-        ;
+                .andDo(document("PlayList", responseFields(
+                        fieldWithPath("[0].name").description("Name of Playlist."),
+                        fieldWithPath("[0].songList").description("List of Songs.")
+                )));
     }
 }
