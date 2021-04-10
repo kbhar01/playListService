@@ -21,12 +21,20 @@ public class PlayListService {
 
     public Response addPlayList(PlayListDTO playListDTO) {
 
-        PlayListEntity entity = new PlayListEntity();
-        entity.setName(playListDTO.getName());
-        entity.setSongList(playListDTO.getSongList());
-        repository.save(entity);
         Response response = new Response();
-        response.setMessage("Playlist is Successfully Created.");
+        if(playListDTO == null || playListDTO.getName() == null || playListDTO.getName().isEmpty())
+        {
+            response.setMessage("A name is required to create a Playlist.");
+        }
+        else
+        {
+            PlayListEntity entity = new PlayListEntity();
+            entity.setName(playListDTO.getName());
+            entity.setSongList(playListDTO.getSongList());
+            repository.save(entity);
+            response.setMessage("Playlist is Successfully Created.");
+        }
+
         return response;
     }
 }
