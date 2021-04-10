@@ -1,6 +1,7 @@
 package com.cognizant.playlistService.integrationTest;
 
 import com.cognizant.playlistService.request.PlayListDTO;
+import com.cognizant.playlistService.request.PlayListSongDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,6 +88,7 @@ public class PlayListServiceIntegrationTest {
         songList.add("Name of Song");
 
 
+
         RequestBuilder rq = post("/")
                 .content(mapper.writeValueAsString(tempRequest))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,6 +106,54 @@ public class PlayListServiceIntegrationTest {
                 .andDo(document("PlayList", responseFields(
                         fieldWithPath("[0].name").description("Name of Playlist."),
                         fieldWithPath("[0].songList").description("List of Songs.")
+                )));
+    }
+
+    @Test
+    public void addSongToExisitingPlaylist() throws Exception {
+        PlayListDTO tempRequest = new PlayListDTO();
+        tempRequest.setName("Playlist Name");
+        List<String> songList = new ArrayList<String>();
+        songList.add("Name of Song");
+        tempRequest.setSongList(songList);
+
+        PlayListSongDTO playListSongDTO = new PlayListSongDTO();
+        playListSongDTO.setName("Playlist Name");
+        playListSongDTO.setSong("Song 2");
+
+
+
+
+        RequestBuilder rq = post("/")
+                .content(mapper.writeValueAsString(tempRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                ;
+
+        mockMvc.perform(rq)
+                .andExpect(status().isCreated())
+        ;
+
+        RequestBuilder rq2 = post("/addsong")
+                .content(mapper.writeValueAsString(playListSongDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                ;
+
+        mockMvc.perform(rq2)
+                .andExpect(status().isAccepted())
+        ;
+
+        RequestBuilder requestBuilder = get("/");
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("[0].name").value("Playlist Name"))
+                .andExpect(jsonPath("[0].songList[0]").value("Name of Song"))
+                .andExpect(jsonPath("[0].songList[1]").value("Song 2"))
+                .andDo(print())
+                .andDo(document("PlayList", responseFields(
+                        fieldWithPath("[0].name").description("Name of Playlist."),
+                        fieldWithPath("[0].songList[0]").description("Song 1"),
+                        fieldWithPath("[0].songList[1]").description("Song 2")
                 )));
     }
 }

@@ -1,6 +1,7 @@
 package com.cognizant.playlistService.controller;
 
 import com.cognizant.playlistService.request.PlayListDTO;
+import com.cognizant.playlistService.request.PlayListSongDTO;
 import com.cognizant.playlistService.response.Response;
 import com.cognizant.playlistService.service.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class PlayListController {
     @PostMapping
     public ResponseEntity<?> addNewPlayList(@RequestBody PlayListDTO playListDTO){
         return new ResponseEntity<>(playListService.addPlayList(playListDTO),HttpStatus.CREATED);
+    }
+
+    @PostMapping("/addsong")
+    public ResponseEntity<?> addSongToPlaylist(@RequestBody PlayListSongDTO playListSongDTO) {
+        return new ResponseEntity<>(playListService.addSongToPlayList(playListSongDTO), HttpStatus.ACCEPTED);
     }
 }

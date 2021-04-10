@@ -3,6 +3,7 @@ package com.cognizant.playlistService.service;
 import com.cognizant.playlistService.entity.PlayListEntity;
 import com.cognizant.playlistService.repository.PlayListRepository;
 import com.cognizant.playlistService.request.PlayListDTO;
+import com.cognizant.playlistService.request.PlayListSongDTO;
 import com.cognizant.playlistService.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,23 @@ public class PlayListService {
             repository.save(entity);
             response.setMessage("Playlist is Successfully Created.");
         }
+        return response;
+    }
+
+    public Response addSongToPlayList(PlayListSongDTO playListSongDTO) {
+        Response response = new Response();
+
+        List<PlayListEntity> existingPlaylists = this.repository.findAll();
+        for (PlayListEntity entity : existingPlaylists)
+        {
+            if(entity.getName().equalsIgnoreCase(playListSongDTO.getName()))
+            {
+                entity.getSongList().add(playListSongDTO.getSong());
+                repository.save(entity);
+                response.setMessage("Song added successfully to the playlist.");
+            }
+        }
+
         return response;
     }
 }
