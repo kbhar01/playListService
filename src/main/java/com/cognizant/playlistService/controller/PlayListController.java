@@ -2,6 +2,8 @@ package com.cognizant.playlistService.controller;
 
 import com.cognizant.playlistService.request.PlayListDTO;
 import com.cognizant.playlistService.response.Response;
+import com.cognizant.playlistService.service.PlayListService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,16 +16,18 @@ import java.util.List;
 @RequestMapping("/")
 public class PlayListController {
 
-    List<PlayListDTO> list = new ArrayList<>();
+    @Autowired
+    PlayListService playListService;
 
     @GetMapping
     public ResponseEntity<?> getPlayLists() {
-        return ResponseEntity.ok(list);
+
+        return ResponseEntity.ok(playListService.getAllPlayLists());
     }
 
     @PostMapping
     public ResponseEntity<?> addNewPlayList(@RequestBody PlayListDTO playListDTO){
-        list.add(playListDTO);
+        playListService.addPlayList(playListDTO);
         Response response = new Response();
         response.setMessage("Playlist addition Successful.");
         return new ResponseEntity<>(HttpStatus.CREATED);
