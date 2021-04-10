@@ -3,6 +3,7 @@ package com.cognizant.playlistService.unitTest;
 import com.cognizant.playlistService.entity.PlayListEntity;
 import com.cognizant.playlistService.repository.PlayListRepository;
 import com.cognizant.playlistService.request.PlayListDTO;
+import com.cognizant.playlistService.response.Response;
 import com.cognizant.playlistService.service.PlayListService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,9 +53,36 @@ public class PlayListServiceUnitTest {
         songList.add("Name of Song1");
         playList.setSongList(songList);
 
-        service.addPlayList(playList);
+        Response actual = service.addPlayList(playList);
 
         verify(repository,never()).save(any());
+        String expected = "A name is required to create a Playlist.";
+        assertEquals(actual.getMessage(), expected);
+    }
+
+    @Test
+    public void duplicatePlaylistTest()
+    {
+        PlayListEntity playListEntity1 = new PlayListEntity();
+        playListEntity1.setName("Playlist");
+        List<String> songList = new ArrayList<String>();
+        songList.add("Name of Song1");
+        playListEntity1.setSongList(songList);
+
+        PlayListDTO playList = new PlayListDTO();
+        playList.setName("Playlist");
+        songList = new ArrayList<String>();
+        songList.add("Name of Song1");
+        playList.setSongList(songList);
+
+        List<PlayListEntity> playListEntityList = Arrays.asList(playListEntity1);
+        when(repository.findAll()).thenReturn(playListEntityList);
+        //Duplicate Addition
+        Response actual = service.addPlayList(playList);
+        verify(repository,never()).save(any());
+
+        String expected = "Playlist NOT created. Playlist already exists.";
+        assertEquals(actual.getMessage(), expected);
     }
 
 }

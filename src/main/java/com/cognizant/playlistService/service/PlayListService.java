@@ -28,13 +28,22 @@ public class PlayListService {
         }
         else
         {
+            List<PlayListEntity> existingPlaylists = this.repository.findAll();
+            for (PlayListEntity entity : existingPlaylists)
+            {
+                if(entity.getName() == playListDTO.getName())
+                {
+                    response.setMessage("Playlist NOT created. Playlist already exists.");
+                    return response;
+                }
+            }
+
             PlayListEntity entity = new PlayListEntity();
             entity.setName(playListDTO.getName());
             entity.setSongList(playListDTO.getSongList());
             repository.save(entity);
             response.setMessage("Playlist is Successfully Created.");
         }
-
         return response;
     }
 }
