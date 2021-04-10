@@ -50,7 +50,7 @@ Software Requirement:
 
 1. Clone the repository:
      ```
-     https://github.com/kbhar01/guestBook.git
+     https://github.com/kbhar01/playListService.git
      ```
 2. Execute this on command line:
 
@@ -88,7 +88,7 @@ heroku login
 
 2. Add Heroku Git Remote
 ```shell
-# guest-book-service is my app name. Please use yours 
+# playlist-service is my app name. Please use yours 
 heroku git:remote -a playlistService 
 ```
 
